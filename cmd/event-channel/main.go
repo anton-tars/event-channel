@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	eventChannel "github.com/anton-tars/event-channel"
@@ -34,9 +35,13 @@ func main() {
 		log.Fatalf("can't send: %s", err)
 	}
 
+	fmt.Printf("ListChannelsBeforeDelete: %s\n", pub.GetChannels())
+
 	if err := pub.DeleteChannel("test"); err != nil {
 		log.Fatalf("can't delete: %s", err)
 	}
+
+	fmt.Printf("ListChannelsAfterDelete: %s\n", pub.GetChannels())
 
 	if err := pub.SendAll("HI ALL11"); err != nil {
 		log.Fatalf("can't send: %s", err)

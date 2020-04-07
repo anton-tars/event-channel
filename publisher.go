@@ -17,7 +17,7 @@ func NewPublisher() *Publisher {
 	}
 }
 
-//AddChannel - add channel
+//AddChannel - add channel - сложность O(1)
 func (p *Publisher) AddChannel(name string, channel *Channel) error {
 	_, ok := p.channels[name]
 	if ok {
@@ -27,7 +27,7 @@ func (p *Publisher) AddChannel(name string, channel *Channel) error {
 	return nil
 }
 
-//DeleteChannel - delete channel
+//DeleteChannel - delete channel - сложность O(1)
 func (p *Publisher) DeleteChannel(name string) error {
 	channel, ok := p.channels[name]
 	if !ok {
@@ -38,9 +38,16 @@ func (p *Publisher) DeleteChannel(name string) error {
 	return nil
 }
 
-//TODO: Удаление канала и получение списка каналов
+//GetChannels - list channels - сложность O(n)
+func (p *Publisher) GetChannels() []string {
+	channels := make([]string, 0, len(p.channels))
+	for channel := range p.channels {
+		channels = append(channels, channel)
+	}
+	return channels
+}
 
-//Send - send message to channel or channels
+//Send - send message to channel or channels - сложность O(n)
 func (p *Publisher) Send(msg string, channels ...string) error {
 	if len(channels) == 0 {
 		p.SendAll(msg)
@@ -56,7 +63,7 @@ func (p *Publisher) Send(msg string, channels ...string) error {
 	return nil
 }
 
-//SendAll - send message to all channels
+//SendAll - send message to all channels - сложность O(n)
 func (p *Publisher) SendAll(msg string) error {
 	for _, ch := range p.channels {
 		ch.Send(msg)
